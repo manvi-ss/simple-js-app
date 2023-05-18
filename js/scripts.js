@@ -1,9 +1,8 @@
-alert('Hello World');
+//pokemon Application
+let pokemonList = [
+    {name: 'Bulbasaur', height: 4, types :['grass', 'poison']},
+    {name: 'charizard', height: 7, types: ['flying','fire']},
+    {name: 'butterfree', height: 5, types: ['bug','flying']}
+];
 
-//variable
-let myName = 'Manvi ';
-document.write(myName);
-let myLike= 'likes ';
-document.write(myLike);
-let favoriteFood = 'rice';
-document.write(favoriteFood);
+
