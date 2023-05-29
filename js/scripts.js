@@ -28,7 +28,12 @@ let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIF
         }
     ];
     function add(pokemon){
-        pokemonList.push(pokemon);
+        if (typeof pokemon === 'object'){
+            pokemonList.push(pokemon);
+        } else{
+            console.log('pokemon input is not correct')
+        }
+        
     }
     function getAll(){
         return pokemonList;
