@@ -1,34 +1,13 @@
 //pokemon Application//
 
 let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIFE (Immediately Invoked Function Expression)
-    let pokemonList = [ // database of pokemon for the pokedex
-        {
-            number:1, 
-            name: 'Bulbasaur', 
-            height: .7, 
-            type:['grass', 'poison']
-        },
-        {
-            number:2, 
-            name: 'Charizard', 
-            height: 1.7, 
-            type:['flying','fire']
-        },
-        {
-            number:3, 
-            name: 'Butterfree', 
-            height: 1.1, 
-            type:['bug','flying']
-        },
-        {
-            number:4, 
-            name: 'Pikachu', 
-            height: .4, 
-            type:['electric']
-        }
-    ];
+    let pokemonList = [];// database of pokemon for the pokedex
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
+
     function add(pokemon){
-        if (typeof pokemon === 'object'){
+        if (typeof pokemon === 'object'
+        && 'detailsUrl' in pokemon
+        ){
             pokemonList.push(pokemon);
         } else{
             console.log('pokemon input is not correct');
@@ -49,22 +28,70 @@ let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIF
         ul.appendChild(listItem);
         
         button.addEventListener('click',function(event){
-            showDetails(pokemon)
+            showDetails(pokemon);
         });
     }
-    function showDetails(pokemon){
-        console.log(pokemon);
-    }
-    return { //returning add & getall functions so that they maybe used outside the IIFE to acess pokemon lost
-        add: add,
-        getAll: getAll,
-        addListItem: addListItem
-        };
-})();
-// console.log(pokemonRepository.getAll());
-pokemonRepository.add({number:5, name:'Squirtle', height: .5, type:['water'] });//adding new item to pokemon array using add function. As add function is returning it is accessible to add new item.
-console.log(pokemonRepository.getAll());
+    
 
-pokemonRepository.getAll().forEach(function(pokemon){
+
+    function loadList() {
+    return fetch(apiUrl).then(function (response) {
+      return response.json();
+    }).then(function (json) {
+      json.results.forEach(function (item) {
+        let pokemon = {
+          name: item.name,
+          detailsUrl: item.url
+        };
+        add(pokemon);
+        console.log(pokemon);
+      });
+    }).catch(function (e) {
+      console.error(e);
+    })
+  }
+  function loadDetails(item) {
+    let url = item.detailsUrl;
+    return fetch(url).then(function (response) {
+      return response.json();
+    }).then(function (details) {
+      // Now we add the details to the item
+      item.imageUrl = details.sprites.front_default;
+      item.height = details.height;
+      item.types = details.types;
+    }).catch(function (e) {
+      console.error(e);
+    });
+  }
+
+  function showDetails(pokemon){
+    pokemonRepository.loadDetails(pokemon).then(function(){ 
+        console.log(pokemon);
+    });
+    
+}
+  return {
+    add: add,
+    getAll: getAll,
+    addListItem: addListItem,
+    loadList: loadList,
+    loadDetails: loadDetails,
+    showDetails: showDetails
+  };
+})();
+
+pokemonRepository.loadList().then(function() {
+  // Now the data is loaded!
+  pokemonRepository.getAll().forEach(function(pokemon){
     pokemonRepository.addListItem(pokemon);
+  });
 });
+
+
+// // console.log(pokemonRepository.getAll());
+// pokemonRepository.add({number:5, name:'Squirtle', height: .5, type:['water'] });//adding new item to pokemon array using add function. As add function is returning it is accessible to add new item.
+// console.log(pokemonRepository.getAll());
+
+// pokemonRepository.getAll().forEach(function(pokemon){
+//     pokemonRepository.addListItem(pokemon);
+// });
