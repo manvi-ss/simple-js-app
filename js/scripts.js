@@ -44,7 +44,7 @@ let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIF
           detailsUrl: item.url
         };
         add(pokemon);
-        console.log(pokemon);
+        
       });
     }).catch(function (e) {
       console.error(e);
