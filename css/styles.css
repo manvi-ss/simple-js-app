@@ -48,6 +48,7 @@ button:hover{
     display:none;
 }
 #modal-container.is-visible{
+    
   position: fixed;
   padding: 20px;
   box-sizing: border-box;
@@ -69,16 +70,34 @@ button:hover{
 }
 
 .modal{
-    margin: auto;
+  margin: auto;
   display: inline-block;
   box-sizing: border-box;
   background: #fff;
+  border: 5px solid yellowgreen;
+  border-radius: 5px;
   padding: 15px;
   width: 100%;
   max-width: 700px;
-  text-align: left;
+  text-align: center;
 }
+.modal h1{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 50px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #000000;
+}
+.modal p {
+    margin-top: 5px;
+    margin-bottom: 0;
+    font-size: 30px;
+    font-weight: bold;
+    text-transform: capitalize;
+    color: #d05dbd;
 
+}
 .modal-close {
     float: right;
     -webkit-appearance: none;
@@ -88,14 +107,8 @@ button:hover{
     text-decoration: underline;
   }
 
-  .modal h1 {
-    margin-top: 0;
-  }
   
-  .modal p {
-    margin-bottom: 0;
-  }
-
+  
  
 
 @media all and (max-width: 500px) {
