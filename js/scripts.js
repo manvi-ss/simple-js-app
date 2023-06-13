@@ -31,7 +31,14 @@ let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIF
         item.imageUrl = details.sprites.front_default;
         item.height = details.height;
         item.weight = details.weight;
-        item.types = details.types;
+        item.types = [];
+        details.types.forEach(function(typeName){
+          item.types.push(typeName.type.name)
+        })
+        item.abilities = [];
+        details.abilities.forEach(function(abilityName){
+          item.abilities.push(abilityName.ability.name)
+        })
       }).catch(function (e) {
         console.error(e);
       });
@@ -54,7 +61,7 @@ let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIF
     function addListItem(pokemon){
       let ul = document.querySelector('.list-group');
       let listItem = document.createElement('li');
-      listItem.classList.add('list-group-items')
+      listItem.classList.add('list-group-items');
       let button = document.createElement('button');
       button.innerText =  pokemon.name;
       button.classList.add('btn');// creating class to edit in css
@@ -97,9 +104,10 @@ let pokemonRepository = (function() {// wrapping the pokeonList inside of an IIF
     weightElement.innerText = 'Weight:' + (pokemon.weight);
 
     let typesElement = document.querySelector('.pokemon-types');
-    typesElement.innerText = 'Types:' + (pokemon.types.map(getAllTypes).join('&'));
-     function getAllTypes(item){
-      return [item.type.name]}
+    typesElement.innerText = 'Types: ' + (pokemon.types);
+    
+    let abilitiesElement = document.querySelector('.pokemon-abilities');
+    abilitiesElement.innerText = 'Ability: ' + (pokemon.abilities);
      });
     }
     
